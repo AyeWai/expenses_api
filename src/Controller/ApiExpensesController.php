@@ -1,0 +1,89 @@
+<?php
+
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Expenses;
+use App\Repository\ExpensesRepository;
+use DateTime;
+use Symfony\Component\HttpFoundation\Request;
+
+class ApiExpensesController extends AbstractController
+{
+    #[Route('/api/expenses', name: 'app_api_expenses')]
+    public function getexpenses(ExpensesRepository $expensesRepository): JsonResponse
+    {
+        $expenses = $expensesRepository->findAll();
+        if(!$expenses){
+            throw $this->createNotFoundException(
+                'No expenses found'
+            );
+        }
+        
+        return $this->json([
+            '$expenses' => $expenses,
+        ]);
+        
+    }
+
+    #[Route('/api/expense/{id}', name: 'app_api_expense', methods: ['GET'])]
+    public function getexpense(ExpensesRepository $expensesRepository, int $id): JsonResponse
+    {
+        $expense = $expensesRepository->findBy(['id'=>$id]);
+        if(!$expense){
+            throw $this->createNotFoundException(
+                'No expenses found with id '. $id
+            );
+        }
+        
+        return $this->json([
+            '$expense' => $expense,
+        ]);
+        
+    }
+
+    #[Route('/api/expense/new', name: 'app_api_new_expense', methods: ['POST'])]
+    public function newexpense(ExpensesRepository $expensesRepository, Request $request): JsonResponse
+    {
+        $parameters = json_decode($request->getContent(), true);
+        $expense = new Expenses();
+        $expense->setDate(new DateTime($parameters['date']));
+        $expense->setAmount($parameters['amount']);
+        $expense->setExpensestype($parameters['type']);
+        $expense->setRegisteringdate(new DateTime());
+        $expense->setCompanyname($parameters['companyname']);
+        $expensesRepository->save($expense, true);
+
+        return $this->json([
+            '$expense' => $expense,
+        ]);
+    }
+
+    #[Route('/api/expenses/edit/{id}', name: 'app_api_expenses', methods: ['PUT'])]
+    public function editexpense(ExpensesRepository $expensesRepository, Request $request, int $id): JsonResponse
+    {
+        $parameters = json_decode($request->getContent(), true);
+        $expense = $expensesRepository->find($id);
+        $expense->setDate(new DateTime($parameters['date']));
+        $expense->setAmount($parameters['amount']);
+        $expense->setExpensestype($parameters['type']);
+        $expense->setRegisteringdate(new DateTime());
+        $expense->setCompanyname($parameters['companyname']);
+        $expensesRepository->save($expense, true);
+        
+        return $this->json([
+            '$expense' => $expense,
+        ]);
+    }
+
+    #[Route('/api/expenses/del', name: 'app_api_expenses', methods: ['POST'])]
+    public function index(): JsonResponse
+    {
+        return $this->json([
+            'message' => 'Welcome to your new controller!',
+            'path' => 'src/Controller/ApiExpensesController.php',
+        ]);
+    }
+}
