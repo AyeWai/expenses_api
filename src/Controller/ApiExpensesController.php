@@ -61,7 +61,7 @@ class ApiExpensesController extends AbstractController
         ]);
     }
 
-    #[Route('/api/expenses/edit/{id}', name: 'app_api_expenses', methods: ['PUT'])]
+    #[Route('/api/expense/edit/{id}', name: 'app_api_edit_expense', methods: ['PUT'])]
     public function editexpense(ExpensesRepository $expensesRepository, Request $request, int $id): JsonResponse
     {
         $parameters = json_decode($request->getContent(), true);
@@ -74,15 +74,19 @@ class ApiExpensesController extends AbstractController
         $expensesRepository->save($expense, true);
         
         return $this->json([
+            'message' => 'Expense with id '. $id .' edited',
             '$expense' => $expense,
         ]);
     }
 
-    #[Route('/api/expenses/del', name: 'app_api_expenses', methods: ['POST'])]
-    public function index(): JsonResponse
-    {
+    #[Route('/api/expense/del/{id}', name: 'app_api_del_expense', methods: ['POST'])]
+    public function index(ExpensesRepository $expensesRepository, int $id): JsonResponse
+    {   
+        $expense = $expensesRepository->find($id);
+        $expensesRepository->remove($expense, true);
+
         return $this->json([
-            'message' => 'Welcome to your new controller!',
+            'message' => 'Expense with id '. $id .' deleted',
             'path' => 'src/Controller/ApiExpensesController.php',
         ]);
     }
