@@ -17,6 +17,11 @@ framework:
     #fragments: true
     php_errors:
         log: true
+    
+    serializer:
+        default_context:
+            json:
+                pretty_print: true
 
 when@test:
     framework:

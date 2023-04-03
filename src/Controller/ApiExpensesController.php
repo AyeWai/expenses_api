@@ -22,9 +22,9 @@ class ApiExpensesController extends AbstractController
             );
         }
         
-        return $this->json([
-            '$expenses' => $expenses,
-        ]);
+        return $this->json($expenses, 200, [], ['circular_reference_handler' => function ($object) {
+            return $object->getId();
+        }]);
         
     }
 
@@ -37,10 +37,10 @@ class ApiExpensesController extends AbstractController
                 'No expenses found with id '. $id
             );
         }
-        
-        return $this->json([
-            '$expense' => $expense,
-        ]);
+        dump($expense);
+        return $this->json($expense, 200, [], ['circular_reference_handler' => function ($object) {
+            return $object->getId();
+        }]);
         
     }
 
@@ -56,9 +56,9 @@ class ApiExpensesController extends AbstractController
         $expense->setCompanyname($parameters['companyname']);
         $expensesRepository->save($expense, true);
 
-        return $this->json([
-            '$expense' => $expense,
-        ]);
+        return $this->json($expense, 200, [], ['circular_reference_handler' => function ($object) {
+            return $object->getId();
+        }]);
     }
 
     #[Route('/api/expense/edit/{id}', name: 'app_api_edit_expense', methods: ['PUT'])]
@@ -74,8 +74,7 @@ class ApiExpensesController extends AbstractController
         $expensesRepository->save($expense, true);
         
         return $this->json([
-            'message' => 'Expense with id '. $id .' edited',
-            '$expense' => $expense,
+            'message' => 'Expense with id '. $id .' edited'
         ]);
     }
 
@@ -86,8 +85,7 @@ class ApiExpensesController extends AbstractController
         $expensesRepository->remove($expense, true);
 
         return $this->json([
-            'message' => 'Expense with id '. $id .' deleted',
-            'path' => 'src/Controller/ApiExpensesController.php',
+            'message' => 'Expense with id '. $id .' deleted'
         ]);
     }
 }
