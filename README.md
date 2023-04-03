@@ -8,6 +8,10 @@ Cloner le projet et effectuer la commande suivante :
 composer install
 ```
 
+Puis pour charger les fixtures et pouvoir tester correctement effectuer la commande suivante:
+```
+php bin/console doctrine:fixtures:load
+```
 ## Endpoints
 
 GET /api/expenses : Renvoie toutes les note de frais enregistrées
