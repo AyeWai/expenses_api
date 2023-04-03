@@ -1,6 +1,13 @@
 # Documentation de l'API Expenses
 Cette API permet de récupérer, ajouter, modifier et supprimer des note de frais.
 
+##Installation
+
+Cloner le projet et effectuer la commande suivante :
+```
+composer install
+```
+
 ## Endpoints
 
 GET /api/expenses : Renvoie toutes les note de frais enregistrées
