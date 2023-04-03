@@ -22,6 +22,15 @@ class ExpensesFixtures extends Fixture implements DependentFixtureInterface
         $expense->setExpensestype($this->getReference(ExpensesTypeFixtures::REPAS));
         $manager->persist($expense);
 
+        $expense2 = new Expenses();
+        $expense2->setDate(new DateTime('21-01-2023'));
+        $expense2->setAmount(111);
+        $expense2->setRegisteringdate(new DateTime(date('j-m-Y')));
+        $expense2->setCompanyname('Kiss The Bride');
+        $expense2->setUser($this->getReference(UserFixtures::USER1));
+        $expense2->setExpensestype($this->getReference(ExpensesTypeFixtures::CONFERENCE));
+        $manager->persist($expense2);
+
         $manager->flush();
     }
 
