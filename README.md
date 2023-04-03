@@ -1,7 +1,14 @@
-Documentation de l'API Expenses
+# Documentation de l'API Expenses
 Cette API permet de récupérer, ajouter, modifier et supprimer des note de frais.
 
-Endpoints
+##Installation
+
+Cloner le projet et effectuer la commande suivante :
+```
+composer install
+```
+
+## Endpoints
 
 GET /api/expenses : Renvoie toutes les note de frais enregistrées
 GET /api/expense/{id} : Renvoie la note de frais correspondant à l'ID spécifié
@@ -9,13 +16,13 @@ POST /api/expense/new : Crée une nouvelle note de frais
 PUT /api/expense/edit/{id} : Modifie la note de frais correspondant à l'ID spécifié
 DELETE /api/expense/del/{id} : Supprime la note de frais correspondant à l'ID spécifié
 
-Paramètres
+## Paramètres
 date : La date de la note de frais au format "DD-MM-YYYY"
 amount : Le montant de la note de frais
 expensestype : Le type de la note de frais
 companyname : Le nom de l'entreprise associée à la note de frais
 
-Réponses
+## Réponses
 
 GET /api/expenses :
 Code de statut : 200 OK
